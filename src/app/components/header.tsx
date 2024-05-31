@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "../styles/header.css";
 import { Outlet } from "react-router-dom";
+import { ThemeContext } from "../context/ThemeContext";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
+  const { isDarkTheme, toggleTheme } = useContext(ThemeContext);
+  console.log("====================================");
+  console.log("isDarkTheme TS =>>", isDarkTheme);
+  console.log("====================================");
+  const Button = () => {
+    toggleTheme();
+    setIsOpen((val) => !val);
+    return <button onClick={() => toggleTheme()}>change Theme</button>;
   };
 
   return (
@@ -25,6 +31,11 @@ const Header = () => {
             </li>
             <li className='nav-item'>
               <a href='/contact'>Contact Us</a>
+            </li>
+            <li className='nav-item'>
+              <button onClick={() => Button()}>
+                {isOpen ? "-- On --" : "-- Off --"}
+              </button>
             </li>
           </ul>
         </nav>

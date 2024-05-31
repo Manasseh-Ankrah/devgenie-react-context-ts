@@ -1,21 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
 import logo from "../../logo.svg";
 import "../styles/App.css";
+import { ThemeContext } from "../context/ThemeContext";
 function Page() {
-  return (
-    <div className='App'>
-      <div className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
+  const { isDarkTheme } = useContext(ThemeContext);
 
-        <a
-          className='App-link'
-          href='https://www.npmjs.com/package/devgenie'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          🧞‍♂️💥DevGenie React TypeScript Setup💥🧞‍♂️
-        </a>
-      </div>
+  return (
+    <div className={`home ${isDarkTheme ? "darkTheme" : "lightTheme"}`}>
+      <img src={logo} className='App-logo' alt='logo' />
+
+      <a
+        className='App-link'
+        href='https://www.npmjs.com/package/devgenie'
+        target='_blank'
+        rel='noopener noreferrer'
+      >
+        🧞‍♂️💥DevGenie React TypeScript Setup💥🧞‍♂️
+      </a>
     </div>
   );
 }
