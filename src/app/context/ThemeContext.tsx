@@ -1,25 +1,43 @@
-import React, { createContext, useState } from "react";
+// import React, { createContext, useContext, useReducer } from "react";
+// import { providerProps } from "../types/types";
 
-type Props = {
-  children: React.ReactNode;
-};
-type contextProps = {
-  isDarkTheme: boolean;
-  toggleTheme: () => void;
-};
+// export const ThemeContext = createContext<any>(undefined);
 
-export const ThemeContext = createContext<contextProps>({
-  isDarkTheme: true,
-  toggleTheme: () => {},
-});
+// export const ThemeProvider = ({
+//   reducer,
+//   initialState,
+//   children,
+// }: providerProps) => {
+//   const value = useReducer(reducer, initialState);
+//   return (
+//     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+//   );
+// };
 
-export const ThemeProvider = ({ children }: Props) => {
-  const [isDarkTheme, setIsDarkTheme] = useState(true);
-  const toggleTheme = () => setIsDarkTheme((prevTheme) => !prevTheme);
+// export const useStateValue = () => useContext(ThemeContext);
 
+import React, { createContext, useContext, useReducer, ReactNode } from "react";
+import { providerProps, stateProp, actionProp } from "../types/types";
+
+export const ThemeContext = createContext<
+  [stateProp, React.Dispatch<actionProp>] | undefined
+>(undefined);
+
+export const ThemeProvider: React.FC<providerProps> = ({
+  reducer,
+  initialState,
+  children,
+}) => {
+  const value = useReducer(reducer, initialState);
   return (
-    <ThemeContext.Provider value={{ isDarkTheme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
+};
+
+export const useStateValue = () => {
+  const context = useContext(ThemeContext);
+  if (context === undefined) {
+    throw new Error("useStateValue must be used within a ThemeProvider");
+  }
+  return context;
 };
